@@ -53,7 +53,7 @@ lib/                — Shared TypeScript libraries
 ### 1. Clone & install
 
 ```bash
-git clone https://github.com/your-username/monlaunch
+git clone https://github.com/ezekielreu6-bit/monlaunch
 cd monlaunch
 pnpm install        # install monorepo deps
 cd monlaunch && npm install   # install Next.js app deps
