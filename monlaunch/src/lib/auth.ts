@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
 
           const result = await siwe.verify({
             signature: credentials.signature,
-            // domain and nonce are validated inside siwe.verify
           });
 
           if (result.success) {
@@ -41,7 +40,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.sub = (user as { address: string }).address;
+        token.sub = user.address;
+        token.address = user.address;
       }
       return token;
     },
@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
           ...session.user,
           name: token.sub,
         };
-        (session as { address?: string }).address = token.sub;
+        session.address = token.address;
       }
       return session;
     },
