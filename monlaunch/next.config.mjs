@@ -11,7 +11,16 @@ const nextConfig = {
   webpack: (config) => {
     // Required for wagmi/viem in Next.js
     config.resolve.fallback = { fs: false, net: false, tls: false };
-    config.externals.push("pino-pretty", "lokijs", "encoding");
+    config.externals.push(
+      "pino-pretty",
+      "lokijs",
+      "encoding",
+      "@x402/evm/upto/client",
+      "@x402/evm/exact/client",
+      "@x402/core/client",
+      "@x402/svm/exact/client",
+      "@x402/evm"
+    );
     return config;
   },
 };
