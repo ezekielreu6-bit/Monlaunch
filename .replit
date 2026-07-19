@@ -18,3 +18,12 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[userenv]
+
+[userenv.shared]
+NEXT_PUBLIC_CHAIN_ID = "10143"
+NEXT_PUBLIC_CHAIN_NAME = "Monad Testnet"
+NEXT_PUBLIC_EXPLORER_URL = "https://testnet.monadexplorer.com"
+NEXT_PUBLIC_FACTORY_ADDRESS = "0xEA2530C202BcDc14bF57277137A3802e19705D7e"
+NEXT_PUBLIC_RPC_URL = "https://testnet-rpc.monad.xyz"

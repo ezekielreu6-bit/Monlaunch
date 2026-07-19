@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
+const PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY || process.env.PRIVATE_KEY || "";
 const MONAD_TESTNET_RPC = process.env.MONAD_TESTNET_RPC || "https://testnet-rpc.monad.xyz";
 
 const config: HardhatUserConfig = {
