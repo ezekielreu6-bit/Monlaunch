@@ -8,6 +8,7 @@
     "deploy:monad-testnet": "hardhat run scripts/deploy.ts --network monadTestnet",
     "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
     "node": "hardhat node",
+    "set-fee:monad-testnet": "hardhat run scripts/setCreationFee.ts --network monadTestnet",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

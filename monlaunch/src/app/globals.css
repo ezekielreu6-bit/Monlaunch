@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #07070f;
+    --surface: #0f0f1a;
+    --surface-2: #16162a;
+    --border: #1e1e38;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #07070f;
+    color: #e2e8f0;
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0f0f1a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2d2d50;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+  }
+}
+
+@layer utilities {
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      #0f0f1a 25%,
+      #16162a 50%,
+      #0f0f1a 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* RainbowKit overrides — match our dark theme */
+[data-rk] {
+  --rk-colors-accentColor: #7c3aed !important;
+  --rk-colors-accentColorForeground: white !important;
+  --rk-colors-connectButtonBackground: #16162a !important;
+  --rk-colors-connectButtonText: #e2e8f0 !important;
+  --rk-colors-modalBackground: #0f0f1a !important;
+  --rk-colors-modalBorder: #1e1e38 !important;
+  --rk-colors-menuItemBackground: #16162a !important;
+  --rk-radii-connectButton: 10px !important;
+  --rk-radii-modal: 16px !important;
+  --rk-radii-menuButton: 10px !important;
+}

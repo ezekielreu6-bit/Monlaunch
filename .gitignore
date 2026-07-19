@@ -1,49 +1,47 @@
-# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# ── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+pnpm-debug.log*
 
-# compiled output
-dist
-tmp
-out-tsc
-*.tsbuildinfo
-.expo
-.expo-shared
+# ── Environment — NEVER commit real secrets ───────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+contracts/.env
 
-# dependencies
-node_modules
+# ── Next.js ───────────────────────────────────────────────────────────────────
+monlaunch/.next/
+monlaunch/out/
+monlaunch/.vercel/
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# ── Hardhat / Solidity ────────────────────────────────────────────────────────
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+contracts/dist/
+# Keep deployments tracked (addresses + ABIs), but not private key data
+# contracts/deployments/  ← intentionally NOT ignored so ABIs are public
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# ── Build outputs ─────────────────────────────────────────────────────────────
+dist/
+build/
+.tsbuildinfo
 
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
-
-# System Files
+# ── OS ────────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
 
-# Replit
-.cache/
-.local/
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
