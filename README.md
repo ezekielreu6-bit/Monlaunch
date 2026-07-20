@@ -9,9 +9,9 @@ Anyone can create a token in seconds. It launches on an on-chain bonding curve i
 ## ✨ Features
 
 - **Token launcher** — Create a meme token with name, symbol, image (IPFS), and description
-- **Bonding curve** — Constant-product AMM (x·y = k), starting price ≈ 0.000000001073 MON
+- **Bonding curve** — Constant-product AMM (x·y = k), starting price ≈ 0.0000001073 MON
 - **Buy / Sell** — Trade any token directly in the browser; 1% fee on every trade
-- **Graduation** — Tokens that raise 10 MON move off the curve to a DEX
+- **Graduation** — Tokens that raise 69 MON move off the curve to a DEX
 - **Trade history** — Live feed of buys/sells per token
 - **Comments** — On-token discussion threads (off-chain, stored in PostgreSQL)
 - **Leaderboard** — Top tokens ranked by trading volume
@@ -32,7 +32,7 @@ lib/                — Shared TypeScript libraries
 
 | Contract | Address (Monad Testnet) |
 |---|---|
-| `MemeFactory` | `0xEA2530C202BcDc14bF57277137A3802e19705D7e` |
+| `MemeFactory` | `0x02dd03e750945188775d1D51D5282Eb86E821f8b` |
 
 ### Tech Stack
 
@@ -95,7 +95,7 @@ Copy `monlaunch/.env.example` → `monlaunch/.env.local` and fill in:
 | `PINATA_JWT` | Pinata API JWT for IPFS uploads | [pinata.cloud](https://pinata.cloud) |
 | `NEXT_PUBLIC_PINATA_GATEWAY` | Your Pinata gateway URL | pinata.cloud dashboard |
 | `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | WalletConnect v2 project ID | [cloud.walletconnect.com](https://cloud.walletconnect.com) |
-| `NEXT_PUBLIC_FACTORY_ADDRESS` | Deployed MemeFactory address | Already set: `0xEA2530C202BcDc14bF57277137A3802e19705D7e` |
+| `NEXT_PUBLIC_FACTORY_ADDRESS` | Deployed MemeFactory address | Already set: `0x02dd03e750945188775d1D51D5282Eb86E821f8b` |
 | `NEXT_PUBLIC_CHAIN_ID` | `10143` | — |
 | `NEXT_PUBLIC_RPC_URL` | `https://testnet-rpc.monad.xyz` | — |
 | `NEXT_PUBLIC_EXPLORER_URL` | `https://testnet.monadexplorer.com` | — |
@@ -139,8 +139,8 @@ Sell: monOut    = monReserve  × tokenIn / (tokenReserve + tokenIn)
 | Parameter | Value |
 |---|---|
 | Total supply per token | 1,000,000,000 tokens |
-| Virtual MON reserve | 1.073 MON |
-| Graduation threshold | 10 MON raised |
+| Virtual MON reserve | 107 MON |
+| Graduation threshold | 69 MON raised |
 | Trade fee | 1% |
 | Creation fee | 0.01 MON |
 
