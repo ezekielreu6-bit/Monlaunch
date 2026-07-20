@@ -35,7 +35,7 @@ export default function TokenCard({ token, rank, livePrice, liveMarketCap }: Pro
   // ── Bonding curve progress ────────────────────────────────────────────────
   const raisedWei  = BigInt(token.realMonRaised ?? "0");
   const raisedMon  = Number(raisedWei) / 1e18;
-  const pct        = Math.min(100, (raisedMon / 10) * 100);
+  const pct        = Math.min(100, (raisedMon / 69) * 100);
 
   return (
     <Link
@@ -134,7 +134,7 @@ export default function TokenCard({ token, rank, livePrice, liveMarketCap }: Pro
         <div className="flex justify-between text-[10px] mono">
           <span className="text-text-muted">
             <Zap className="w-2.5 h-2.5 inline -mt-0.5 text-green" />{" "}
-            {raisedMon.toFixed(3)} / 10 MON
+            {raisedMon.toFixed(3)} / 69 MON
           </span>
           <span className={token.graduated ? "text-green font-bold" : "text-text-muted"}>
             {pct.toFixed(1)}%
