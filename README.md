@@ -216,6 +216,31 @@ contracts/
 - IPFS uploads: server-side only (Pinata JWT never exposed to client)
 
 ---
+## Connect with me 🌐
+
+<p align="center">
+  <a href="https://instagram.com/ezekielreu6" target="_blank">
+    <img src="https://img.shields.io/badge/Instagram-%40ezekielreu6-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />
+  </a>
+  <a href="https://twitter.com/ezekielreu6" target="_blank">
+    <img src="https://img.shields.io/badge/Twitter-%40ezekielreu6-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" />
+  </a>
+  <a href="https://linkedin.com/in/ezekielreu6" target="_blank">
+    <img src="https://img.shields.io/badge/LinkedIn-ezekielreu6-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="https://github.com/ezekielreu6-bit" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-ezekielreu6-bit-181717?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+  
+  <a href="https://tiktok.com/@ezekielreu6" target="_blank">
+    <img src="https://img.shields.io/badge/TikTok-%40ezekielreu6-000000?style=for-the-badge&logo=tiktok&logoColor=white" />
+  </a>
+</p>
+
+### Follow me
+I post about coding, design, and life updates. Tap any link above and say hi 👋
+
+---
 
 ## 📄 License
 
