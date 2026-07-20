@@ -30,7 +30,7 @@ export default function BondingCurveProgress({
   const pct        = Math.min(100, Number(activeProgress) / 100);
   const raisedMon  = (Number(activeRaised) / 1e18).toFixed(4);
   const raisedNum  = Number(activeRaised) / 1e18;
-  const remaining  = Math.max(0, 10 - raisedNum).toFixed(4);
+  const remaining  = Math.max(0, 69 - raisedNum).toFixed(4);
 
   if (compact) {
     return (
@@ -83,7 +83,7 @@ export default function BondingCurveProgress({
           className="absolute inset-0 flex items-center justify-center text-[10px] font-bold mono mix-blend-luminosity"
           style={{ color: pct > 50 ? "#000" : "#00ff88" }}
         >
-          {raisedMon} / 10 MON
+          {raisedMon} / 69 MON
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default function BondingCurveProgress({
         {[
           { label: "RAISED",  value: raisedMon,  color: "text-white" },
           { label: "NEEDED",  value: remaining,  color: "text-white" },
-          { label: "GOAL",    value: "10.0",     color: "text-green" },
+          { label: "GOAL",    value: "69.0",     color: "text-green" },
         ].map(({ label, value, color }) => (
           <div key={label} className="bg-surface-2 border border-border rounded p-2">
             <p className="text-[10px] text-text-muted mono">{label}</p>
@@ -107,8 +107,8 @@ export default function BondingCurveProgress({
         </p>
       ) : (
         <p className="text-[11px] text-text-muted leading-relaxed">
-          When 10 MON is raised, this token graduates and its liquidity is deposited
-          into a DEX. All {(10 - raisedNum).toFixed(3)} MON still needed.
+          When 69 MON is raised, this token graduates and its liquidity is deposited
+          into a DEX. All {(69 - raisedNum).toFixed(3)} MON still needed.
         </p>
       )}
     </div>
