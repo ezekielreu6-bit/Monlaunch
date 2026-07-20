@@ -109,7 +109,7 @@ export default async function TokenPage({ params }: Props) {
   const graduated     = chainData?.graduated     ?? dbToken?.graduated ?? false;
 
   // Graduation progress (0–10 000 basis points)
-  const GRADUATION_THRESHOLD = BigInt("10000000000000000000");
+  const GRADUATION_THRESHOLD = BigInt("69000000000000000000"); // 69 MON
   const progress =
     realMonRaised > GRADUATION_THRESHOLD
       ? 10000n
