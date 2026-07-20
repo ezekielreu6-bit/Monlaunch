@@ -1,6 +1,6 @@
 export const FACTORY_ADDRESS =
   (process.env.NEXT_PUBLIC_FACTORY_ADDRESS as `0x${string}`) ||
-  "0xEA2530C202BcDc14bF57277137A3802e19705D7e";
+  "0x02dd03e750945188775d1D51D5282Eb86E821f8b";
 
 export const CREATION_FEE_MON = "0.01"; // MON — mirrors contract's creationFee
 
@@ -67,6 +67,15 @@ export const MEME_FACTORY_ABI = [
     name: "TokenGraduated",
     type: "event",
   },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: "uint256", name: "oldBps", type: "uint256" },
+      { indexed: false, internalType: "uint256", name: "newBps", type: "uint256" },
+    ],
+    name: "MaxWalletBpsUpdated",
+    type: "event",
+  },
 
   // ── Constants ───────────────────────────────────────────────────────────────
   { inputs: [], name: "GRADUATION_THRESHOLD", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
@@ -76,10 +85,31 @@ export const MEME_FACTORY_ABI = [
   { inputs: [{ internalType: "uint256", name: "", type: "uint256" }], name: "allTokens", outputs: [{ internalType: "address", name: "", type: "address" }], stateMutability: "view", type: "function" },
   { inputs: [], name: "creationFee", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
   { inputs: [], name: "feesAccumulated", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
+  { inputs: [], name: "maxWalletBps", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
   { inputs: [], name: "owner", outputs: [{ internalType: "address", name: "", type: "address" }], stateMutability: "view", type: "function" },
   { inputs: [], name: "totalTokens", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
+  {
+    inputs: [
+      { internalType: "address", name: "tokenAddress", type: "address" },
+      { internalType: "address", name: "buyer", type: "address" },
+    ],
+    name: "walletBought",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
 
   // ── View helpers ────────────────────────────────────────────────────────────
+  {
+    inputs: [
+      { internalType: "address", name: "tokenAddress", type: "address" },
+      { internalType: "address", name: "buyer", type: "address" },
+    ],
+    name: "getRemainingAllowance",
+    outputs: [{ internalType: "uint256", name: "remaining", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
   {
     inputs: [{ internalType: "address", name: "tokenAddress", type: "address" }],
     name: "getSpotPrice",
@@ -189,6 +219,13 @@ export const MEME_FACTORY_ABI = [
   {
     inputs: [{ internalType: "uint256", name: "newFee", type: "uint256" }],
     name: "setCreationFee",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "newBps", type: "uint256" }],
+    name: "setMaxWalletBps",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
