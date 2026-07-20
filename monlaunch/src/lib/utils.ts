@@ -53,6 +53,27 @@ export function formatMarketCap(value: bigint): string {
   return `${compactNumber(num)} MON`;
 }
 
+const TOTAL_SUPPLY = 1_000_000_000n * 10n ** 18n; // 1 B tokens, 18 decimals
+
+/**
+ * Calculate spot price from on-chain reserves.
+ * Returns price in MON per token (18-decimal bigint), same unit as getSpotPrice().
+ */
+export function calcSpotPrice(monReserve: bigint, tokenReserve: bigint): bigint {
+  if (tokenReserve === 0n) return 0n;
+  return (monReserve * 10n ** 18n) / tokenReserve;
+}
+
+/**
+ * Calculate fully-diluted market cap from reserves.
+ * = spotPrice × totalSupply, expressed in MON (18-decimal bigint).
+ */
+export function calcMarketCap(monReserve: bigint, tokenReserve: bigint): bigint {
+  if (tokenReserve === 0n) return 0n;
+  const spotPrice = calcSpotPrice(monReserve, tokenReserve);
+  return (spotPrice * TOTAL_SUPPLY) / 10n ** 18n;
+}
+
 /** Graduation progress as a percentage (0–100) */
 export function graduationPercent(progress: bigint): number {
   return Math.min(100, Number(progress) / 100);
