@@ -66,7 +66,7 @@ export default async function Home({ searchParams }: { searchParams: { tab?: str
               </p>
               <div className="flex flex-wrap gap-2 pt-1">
                 <Link href="/create"
-                  className="flex items-center gap-2 px-5 py-2.5 rounded bg-green hover:bg-green-dim text-black font-black text-sm mono uppercase tracking-wider transition-colors">
+                  className="flex items-center gap-2 px-5 py-2.5 rounded bg-green hover:bg-green-dim text-white font-white text-sm mono uppercase tracking-wider transition-colors">
                   <Rocket className="w-4 h-4" /> Launch Token
                 </Link>
                 <a href="https://testnet.monadexplorer.com/address/0x02dd03e750945188775d1D51D5282Eb86E821f8b"
