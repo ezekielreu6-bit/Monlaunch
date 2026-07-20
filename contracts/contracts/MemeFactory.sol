@@ -21,9 +21,12 @@ import "./MemeToken.sol";
  * A 1 % fee is applied on every trade. Fees accumulate and can be
  * withdrawn by the owner.
  *
+ * Anti-whale: each wallet may accumulate at most MAX_WALLET_BPS of the
+ * total supply through the bonding curve. Default is 500 bps (5 %).
+ * The owner can lower or raise this limit via setMaxWalletBps().
+ *
  * Graduation: once a token has raised GRADUATION_THRESHOLD real MON,
  * it is marked as graduated and trading stops on the bonding curve.
- * At that point the collected MON can be seeded into a DEX.
  */
 contract MemeFactory is Ownable, ReentrancyGuard {
     // ─── Constants ────────────────────────────────────────────────────────────
@@ -33,23 +36,30 @@ contract MemeFactory is Ownable, ReentrancyGuard {
 
     /**
      * @notice Virtual MON reserve seeded into every new curve.
-     *         Setting this to 1.073 MON (1073 * 10^15 wei) means the
-     *         starting price is ≈ 0.000000001073 MON per token — extremely
-     *         cheap at launch, steeply rising with buys.
+     *         Setting this to 1.073 MON means the starting price is
+     *         ≈ 0.000000001073 MON per token — extremely cheap at launch.
      */
-    uint256 public constant VIRTUAL_MON_RESERVE = 1_073 * 10 ** 15; // 1.073 MON
+    uint256 public constant VIRTUAL_MON_RESERVE = 107 * 10 ** 18; // 107 MON
 
     /// @notice Amount of real MON raised that triggers graduation
-    uint256 public constant GRADUATION_THRESHOLD = 10 * 10 ** 18; // 10 MON
-
-    /// @notice Optional flat fee to create a token (0 by default — change if desired)
-    uint256 public creationFee = 0;
+    uint256 public constant GRADUATION_THRESHOLD = 69 * 10 ** 18; // 69 MON
 
     /// @notice Trade fee in basis points (100 = 1 %)
     uint256 public constant TRADE_FEE_BPS = 100;
     uint256 private constant BPS_DENOMINATOR = 10_000;
 
     // ─── State ────────────────────────────────────────────────────────────────
+
+    /// @notice Optional flat fee to create a token (0 by default)
+    uint256 public creationFee = 0;
+
+    /**
+     * @notice Maximum tokens any single wallet may accumulate through
+     *         the bonding curve, expressed in basis points of TOTAL_SUPPLY.
+     *         Default: 500 bps = 5 % = 50,000,000 tokens.
+     *         Owner can adjust via setMaxWalletBps().
+     */
+    uint256 public maxWalletBps = 500;
 
     struct TokenInfo {
         address tokenAddress;
@@ -72,6 +82,17 @@ contract MemeFactory is Ownable, ReentrancyGuard {
 
     /// @notice accumulated fees (in wei) available for withdrawal
     uint256 public feesAccumulated;
+
+    /**
+     * @notice Tracks how many tokens each wallet has ever bought through
+     *         the curve for a given token.
+     *         walletBought[tokenAddress][buyer] → tokens purchased (18 dec)
+     *
+     * @dev    Sells do NOT decrease this counter — the cap is intentionally
+     *         one-directional so a whale can't buy-dump-buy repeatedly to
+     *         circumvent the limit.
+     */
+    mapping(address => mapping(address => uint256)) public walletBought;
 
     // ─── Events ───────────────────────────────────────────────────────────────
 
@@ -108,6 +129,7 @@ contract MemeFactory is Ownable, ReentrancyGuard {
     );
 
     event FeesWithdrawn(address indexed to, uint256 amount);
+    event MaxWalletBpsUpdated(uint256 oldBps, uint256 newBps);
 
     // ─── Constructor ──────────────────────────────────────────────────────────
 
@@ -253,6 +275,17 @@ contract MemeFactory is Ownable, ReentrancyGuard {
         require(tokensOut > 0, "Zero tokens out");
         require(tokensOut <= info.tokenReserve, "Exceeds token reserve");
 
+        // ── Anti-whale cap ──────────────────────────────────────────────────
+        // The cap is on cumulative curve purchases per wallet — not ERC-20
+        // balance — so buy-dump-rebuy cannot be used to bypass the limit.
+        uint256 maxWalletTokens = (TOTAL_SUPPLY * maxWalletBps) / BPS_DENOMINATOR;
+        require(
+            walletBought[tokenAddress][buyer] + tokensOut <= maxWalletTokens,
+            "Max wallet exceeded: too many tokens for one address"
+        );
+        walletBought[tokenAddress][buyer] += tokensOut;
+        // ────────────────────────────────────────────────────────────────────
+
         // Update reserves
         info.monReserve += monInAfterFee;
         info.tokenReserve -= tokensOut;
@@ -286,7 +319,6 @@ contract MemeFactory is Ownable, ReentrancyGuard {
     function getSpotPrice(address tokenAddress) external view returns (uint256) {
         TokenInfo storage info = tokens[tokenAddress];
         require(info.tokenAddress != address(0), "Token not found");
-        // price = monReserve / tokenReserve  (both 18-decimal, result is also 18-decimal)
         return (info.monReserve * 10 ** 18) / info.tokenReserve;
     }
 
@@ -332,6 +364,20 @@ contract MemeFactory is Ownable, ReentrancyGuard {
         return (info.realMonRaised * BPS_DENOMINATOR) / GRADUATION_THRESHOLD;
     }
 
+    /**
+     * @notice How many tokens `buyer` can still purchase through the curve
+     *         before hitting the anti-whale cap.
+     */
+    function getRemainingAllowance(address tokenAddress, address buyer)
+        external
+        view
+        returns (uint256 remaining)
+    {
+        uint256 maxWalletTokens = (TOTAL_SUPPLY * maxWalletBps) / BPS_DENOMINATOR;
+        uint256 bought = walletBought[tokenAddress][buyer];
+        remaining = bought >= maxWalletTokens ? 0 : maxWalletTokens - bought;
+    }
+
     /// @notice Total number of tokens launched
     function totalTokens() external view returns (uint256) {
         return allTokens.length;
@@ -350,7 +396,7 @@ contract MemeFactory is Ownable, ReentrancyGuard {
         uint256 total = allTokens.length;
         if (offset >= total) return new address[](0);
 
-        uint256 end = total - offset; // exclusive upper bound (newest → oldest)
+        uint256 end = total - offset;
         uint256 start = end > limit ? end - limit : 0;
         uint256 count = end - start;
 
@@ -379,6 +425,17 @@ contract MemeFactory is Ownable, ReentrancyGuard {
     /// @notice Update the token creation fee (owner only)
     function setCreationFee(uint256 newFee) external onlyOwner {
         creationFee = newFee;
+    }
+
+    /**
+     * @notice Update the per-wallet buy cap.
+     * @param newBps Basis points of TOTAL_SUPPLY (e.g. 500 = 5 %).
+     *               Cannot exceed 2000 (20 %) to preserve fairness.
+     */
+    function setMaxWalletBps(uint256 newBps) external onlyOwner {
+        require(newBps > 0 && newBps <= 2_000, "Must be 1-2000 bps");
+        emit MaxWalletBpsUpdated(maxWalletBps, newBps);
+        maxWalletBps = newBps;
     }
 
     /// @notice Receive MON sent directly (e.g. initial seeding)
